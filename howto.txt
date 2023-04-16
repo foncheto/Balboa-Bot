@@ -1,0 +1,21 @@
+create py venv
+	python -m venv name
+activate venv
+	cd into Scripts
+	. activate
+deactivate venv
+	deactivate
+
+
+	
+
+install dependencies in requirements
+	pip install -r requirements.txt
+
+download ffmpeg and add .exe to environment variable PATH or python scripts
+
+Get bot token and add to main.py
+
+run
+	python main.py
+

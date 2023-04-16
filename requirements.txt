@@ -1,0 +1,7 @@
+discord
+discord.py
+pytz
+ffmpeg
+ffmpeg-python
+PyNaCl
+youtube-dl
