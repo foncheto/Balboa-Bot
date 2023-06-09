@@ -12,12 +12,6 @@ deactivate venv
 install dependencies in requirements
 	pip install -r requirements.txt
 
-reinstall youtube_dl
-	pip install git+https://github.com/ytdl-org/youtube-dl.git@master#egg=youtube_dl
-
-Install ffmpeg on macOS
-	brew install ffmpeg
-
 download ffmpeg and add .exe to environment variable PATH or python scripts
 
 Get bot token and add to main.py
