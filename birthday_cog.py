@@ -65,7 +65,7 @@ class birthday_cog(commands.Cog):
             user_data = {"user_id": user_id, "birthday": birthday.strftime("%Y-%m-%d")}
             self.collection.insert_one(user_data)
 
-    @tasks.loop(minutes=1)
+    @tasks.loop(hours=24)
     async def check_birthdays(self):
         # Get the current date without the year
         current_date = datetime.datetime.now().date().replace(year=1900)
