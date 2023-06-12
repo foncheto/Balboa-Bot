@@ -64,7 +64,7 @@ class music_cog(commands.Cog):
 
                 # in case we fail to connect
                 if self.vc == None:
-                    await ctx.send("Could not connect to the voice channel")
+                    await ctx.send("No me pude conectar al canal de voz :(")
                     return
             else:
                 await self.vc.move_to(self.music_queue[0][1])
@@ -95,10 +95,10 @@ class music_cog(commands.Cog):
             song = self.search_yt(query)
             if type(song) == type(True):
                 await ctx.send(
-                    "Could not download the song. Incorrect format try another keyword. This could be due to playlist or a livestream format."
+                    "No pude descargar la cancion o video, por favor intenta con un nombre mas especifico o revisa la ortografia perkin :("
                 )
             else:
-                await ctx.send("Song added to the queue")
+                await ctx.send("Cancion agregada a la cola!")
                 self.music_queue.append([song, voice_channel])
 
                 if self.is_playing == False:
@@ -147,7 +147,7 @@ class music_cog(commands.Cog):
         if retval != "":
             await ctx.send(retval)
         else:
-            await ctx.send("No music in queue")
+            await ctx.send("No hay musica en la cola")
 
     @commands.command(
         name="clear", aliases=["c", "bin"], help="Stops the music and clears the queue"
@@ -156,7 +156,7 @@ class music_cog(commands.Cog):
         if self.vc != None and self.is_playing:
             self.vc.stop()
             self.music_queue = []
-            await ctx.send("Music queue cleared")
+            await ctx.send("Cola de musica borrada")
 
     @commands.command(
         name="leave", aliases=["disconnect", "l", "d"], help="Kick the bot from VC"

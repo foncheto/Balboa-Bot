@@ -13,15 +13,15 @@ class weather_cog(commands.Cog):
         self.bot = bot
         self.city = None
 
-    @commands.command(name="weather", help="Get the weather of a city")
+    @commands.command(name="weather", aliases=["w","clima"], help="Get the weather of a city")
     async def weather(self, ctx, *args):
         if len(args) == 0:
-            await ctx.send("Please enter a city")
+            await ctx.send("Porfavor ingresa una ciudad para buscar el clima", delete_after=20)
             return
 
         self.city = args[0]
 
-        await ctx.send(f"Getting weather for {self.city}", delete_after=25)
+        await ctx.send(f"Consiguiendo el clima en {self.city}", delete_after=20)
 
         url = "http://api.weatherapi.com/v1/forecast.json"
         params = {"key": TOKEN, "q": self.city, "days": 3}  # Specify 2 days of forecast

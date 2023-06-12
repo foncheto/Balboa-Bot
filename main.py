@@ -15,7 +15,7 @@ from weather_cog import weather_cog
 
 intent = discord.Intents.all()
 
-bot = commands.Bot(command_prefix="/", intents=intent)
+bot = commands.Bot(command_prefix="-", intents=intent)
 
 bot.remove_command("help")
 

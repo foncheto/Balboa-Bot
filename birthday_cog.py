@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands, tasks
 import datetime
 import pymongo
+
 import certifi
 ca = certifi.where()
 
@@ -24,7 +25,7 @@ class birthday_cog(commands.Cog):
         self.connect_to_mongodb()  # Establish the MongoDB connection
         self.check_birthdays.start()  # Start the background task
 
-    @commands.command(name="set_birthday", aliases=["bday"], help="Set your birthday.")
+    @commands.command(name="set_birthday", aliases=["bday", "cumple"], help="Set your birthday.")
     async def set_birthday(self, ctx, date):
         """Set your birthday."""
         try:
@@ -34,9 +35,9 @@ class birthday_cog(commands.Cog):
             # Save the birthday date for the user
             self.save_birthday(ctx.author.id, birthday)
 
-            await ctx.send("Birthday set successfully!")
+            await ctx.send("Cumpleaños agregado exitosamente!")
         except ValueError:
-            await ctx.send("Invalid date format. Please use the format: YYYY-MM-DD")
+            await ctx.send("Formato de fecha incorrecto. Por favor usa YYYY-MM-DD.")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -67,12 +68,12 @@ class birthday_cog(commands.Cog):
             user_data = {"user_id": user_id, "birthday": birthday.strftime("%Y-%m-%d")}
             self.collection.insert_one(user_data)
 
-    @tasks.loop(seconds=10)
+    @tasks.loop(hours=12)
     async def check_birthdays(self):
         # Get the current date without the year
         current_date = datetime.datetime.now().date().replace(year=1900)
 
-        channel = self.bot.get_channel(1097203615564828783)  # Replace with your channel ID
+        channel = self.bot.get_channel(722101224605876225)
 
         # Find all users with a birthday today
         birthday_users = list(
@@ -88,9 +89,9 @@ class birthday_cog(commands.Cog):
         birthday_count = len(birthday_users)  # Get the count of documents
 
         if birthday_count == 0:
-            await channel.send("No birthdays today.")
+            await channel.send("No hay cumpleaños hoy :(")
         else:
-            message = "Birthdays today:\n"
+            message = "Cumpleaños Hoy:\n"
             for user_data in birthday_users:
                 user = self.bot.get_user(user_data["user_id"])
                 if user:
@@ -121,9 +122,9 @@ class birthday_cog(commands.Cog):
         birthday_count = len(birthday_users)  # Get the count of documents
 
         if birthday_count == 0:
-            await ctx.send("No birthdays today.")
+            await ctx.send("No hay cumpleaños hoy :(")
         else:
-            message = "Birthdays today:\n"
+            message = "Cumpleaños Hoy:\n"
             for user_data in birthday_users:
                 user = self.bot.get_user(user_data["user_id"])
                 if user:
@@ -131,15 +132,15 @@ class birthday_cog(commands.Cog):
 
             await ctx.send(message)
 
-    @commands.command(name="display", help="Display all registered birthdays.")
+    @commands.command(name="display", aliases=['mostrar'], help="Display all registered birthdays.")
     async def display_birthdays(self, ctx):
         # Get all registered birthdays
         birthday_users = list(self.collection.find())
 
         if len(birthday_users) == 0:
-            await ctx.send("No birthdays have been registered.")
+            await ctx.send("No existen cumpleaños registrados.")
         else:
-            message = "Registered birthdays:\n"
+            message = "Cumpleaños Registrados:\n"
             for user_data in birthday_users:
                 user_id = user_data.get("user_id")
                 if user_id:

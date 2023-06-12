@@ -8,14 +8,17 @@ class help_cog(commands.Cog):
 
         self.message = """
 ```
-!help - Shows this message
-!play <song name> - Plays a song
-!pause - Pauses the current song
-!resume - Resumes the current song
-!stop - Stops the current song
-!queue - Shows the current song queue
-!skip - Skips the current song
-!clear - Clears the song queue
+-help - Shows this message
+-play <song name> - Plays a song
+-pause - Pauses the current song
+-resume - Resumes the current song
+-stop - Stops the current song
+-queue - Shows the current song queue
+-skip - Skips the current song
+-clear - Clears the song queue
+-bday <YYYY-MM-DD> - Sets your birthday
+-weather <city> - Shows the weather in the specified city
+
 ```
         """
         self.text_channel_list = []
