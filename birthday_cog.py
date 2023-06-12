@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands, tasks
 import datetime
 import pymongo
+import certifi
+ca = certifi.where()
 
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -46,7 +48,7 @@ class birthday_cog(commands.Cog):
         # Set up MongoDB connection
 
         mongo_uri = TOKEN  # Replace with your MongoDB URI
-        self.mongo_client = pymongo.MongoClient(mongo_uri)
+        self.mongo_client = pymongo.MongoClient(mongo_uri, tlsCAFile=ca)
         self.db = self.mongo_client["BalboaBot"]
         self.collection = self.db["Birthdays"]
 
@@ -65,7 +67,7 @@ class birthday_cog(commands.Cog):
             user_data = {"user_id": user_id, "birthday": birthday.strftime("%Y-%m-%d")}
             self.collection.insert_one(user_data)
 
-    @tasks.loop(hours=24)
+    @tasks.loop(seconds=10)
     async def check_birthdays(self):
         # Get the current date without the year
         current_date = datetime.datetime.now().date().replace(year=1900)
@@ -102,15 +104,19 @@ class birthday_cog(commands.Cog):
         current_date = datetime.datetime.now().date().replace(year=1900)
 
         # Find all users with a birthday today
-        birthday_users = list(
-            self.collection.find(
-                {
-                    "birthday": {
-                        "$regex": f"{current_date.month:02d}-{current_date.day:02d}"
+        try:
+            birthday_users = list(
+                self.collection.find(
+                    {
+                        "birthday": {
+                            "$regex": f"{current_date.month:02d}-{current_date.day:02d}"
+                        }
                     }
-                }
+                )
             )
-        )
+        except ServerApi.ServerSelectionTimeoutError:
+            await ctx.send("Error connecting to MongoDB.")
+            return
 
         birthday_count = len(birthday_users)  # Get the count of documents
 
