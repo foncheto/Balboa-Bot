@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands, tasks
 import datetime
 import pymongo
+import os
 
 import certifi
 ca = certifi.where()
@@ -68,7 +69,7 @@ class birthday_cog(commands.Cog):
             user_data = {"user_id": user_id, "birthday": birthday.strftime("%Y-%m-%d")}
             self.collection.insert_one(user_data)
 
-    @tasks.loop(hours=12)
+    @tasks.loop(hours=24)
     async def check_birthdays(self):
         # Get the current date without the year
         current_date = datetime.datetime.now().date().replace(year=1900)
@@ -89,14 +90,13 @@ class birthday_cog(commands.Cog):
         birthday_count = len(birthday_users)  # Get the count of documents
 
         if birthday_count == 0:
-            await channel.send("No hay cumpleaños hoy :(")
+            await channel.send("Nadie está de cumpleaños hoy")
         else:
-            message = "Cumpleaños Hoy:\n"
+            message = ""
             for user_data in birthday_users:
                 user = self.bot.get_user(user_data["user_id"])
                 if user:
-                    message += f"- {user.mention}\n"
-
+                    message += f"¡Feliz Cumpleaños {user.mention}!\n"
             await channel.send(message)
 
     @commands.command(name="check", help="Check for birthdays today.")
@@ -149,6 +149,6 @@ class birthday_cog(commands.Cog):
                         birthday = datetime.datetime.strptime(
                             user_data["birthday"], "%Y-%m-%d"
                         ).date()
-                        message += f"- {user.mention}: {birthday.strftime('%B %d')}\n"
+                        message += f"- {user.name} ~ {birthday.strftime('%B %d')}\n"
 
             await ctx.send(message)

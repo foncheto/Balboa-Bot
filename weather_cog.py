@@ -3,6 +3,7 @@ from discord.ext import commands
 import asyncio
 import aiohttp
 import json
+import os
 
 with open("credentials.json") as file:
     credentials = json.load(file)
