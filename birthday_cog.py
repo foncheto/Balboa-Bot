@@ -12,10 +12,10 @@ from pymongo.server_api import ServerApi
 
 import json
 
-# Load the Discord API key from credentials.json
-with open("credentials.json") as file:
-    credentials = json.load(file)
+with open("credentials.json", "r") as f:
+    credentials = json.load(f)
     TOKEN = credentials["mongo_uri"]
+
 
 class birthday_cog(commands.Cog):
     def __init__(self, bot):
@@ -74,9 +74,10 @@ class birthday_cog(commands.Cog):
         # Get the current date without the year
         current_date = datetime.datetime.now().date().replace(year=1900)
 
-        channel = self.bot.get_channel(722101224605876225)
+        channel = self.bot.get_channel(852779059234340894)
 
         # Find all users with a birthday today
+
         birthday_users = list(
             self.collection.find(
                 {

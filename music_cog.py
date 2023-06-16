@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
 
-from youtube_dl import YoutubeDL
-
+from yt_dlp import YoutubeDL
 
 class music_cog(commands.Cog):
     def __init__(self, bot):
@@ -20,7 +19,6 @@ class music_cog(commands.Cog):
             "options": "-vn",
         }
         self.vc = None
-
     # searching the item on youtube
     def search_yt(self, item):
         with YoutubeDL(self.YDL_OPTIONS) as ydl:
@@ -31,7 +29,7 @@ class music_cog(commands.Cog):
             except Exception:
                 return False
 
-        return {"source": info["formats"][0]["url"], "title": info["title"]}
+        return {"source": info["url"], "title": info["title"]}
 
     def play_next(self):
         if len(self.music_queue) > 0:
