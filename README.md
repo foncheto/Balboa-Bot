@@ -1,2 +1,2 @@
 # Balboa-Bot
-first try on discord bot using discord.js.
+Multipurpose discord bot using discord.py library. As of now it includes birthday reminder, weather requests and youtube music player. 
